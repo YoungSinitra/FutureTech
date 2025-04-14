@@ -1,0 +1,237 @@
+@model IEnumerable<FutureTech.Models.Student>
+
+@{
+    ViewData["Title"] = "Student Management";
+    ViewData["HideFooter"] = true;
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <span class="badge bg-pink text-dark">Administration</span>
+            <h1 class="fw-bold mt-2">Student Management</h1>
+        </div>
+        <a asp-action="Create" class="btn btn-dark rounded-pill px-4 py-2">
+            <i class="bi bi-person-plus me-2"></i> Add New Student
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    
+    @if (TempData["DeleteMessage"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show rounded-4 border-0 shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["DeleteMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    
+    @if (TempData["StatusMessage"] != null)
+    {
+        <div class="alert alert-info alert-dismissible fade show rounded-4 border-0 shadow-sm" role="alert">
+            <i class="bi bi-info-circle-fill me-2"></i> @TempData["StatusMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card border-0 rounded-4 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold">Student Records</h5>
+                <div>
+                    <a asp-action="Search" class="btn btn-light rounded-pill">
+                        <i class="bi bi-search"></i> Search
+                    </a>
+                </div>
+            </div>
+            
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase">Name</th>
+                                <th class="text-uppercase">Email</th>
+                                <th class="text-uppercase">Mobile</th>
+                                <th class="text-uppercase">Status</th>
+                                <th class="text-uppercase text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in Model)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@student.FullName</td>
+                                    <td>@student.Email</td>
+                                    <td>@student.MobileNumber</td>
+                                    <td>
+                                        @if (student.EnrolmentStatus == "Active")
+                                        {
+                                            <span class="badge status-badge">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">@student.EnrolmentStatus</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-center">
+                                            <a asp-action="Details" asp-route-id="@student.Id" class="btn btn-sm btn-icon me-1">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@student.Id" class="btn btn-sm btn-icon me-1">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@student.Id" class="btn btn-sm btn-icon btn-delete">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                @if (ViewBag.TotalPages > 1)
+                {
+                    <nav class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            @if (ViewBag.CurrentPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link rounded-pill border-0 shadow-sm px-3 mx-1" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled">
+                                    <a class="page-link rounded-pill border-0 px-3 mx-1" href="#">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                    <a class="page-link rounded-pill border-0 shadow-sm px-3 mx-1" asp-action="Index" asp-route-page="@i">@i</a>
+                                </li>
+                            }
+
+                            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link rounded-pill border-0 shadow-sm px-3 mx-1" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item disabled">
+                                    <a class="page-link rounded-pill border-0 px-3 mx-1" href="#">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                }
+            }
+            else
+            {
+                <div class="alert alert-light rounded-4 border-0 shadow-sm text-center p-5">
+                    <i class="bi bi-people display-1 text-pink mb-4 d-block"></i>
+                    <h4 class="fw-bold">No student records found</h4>
+                    <p class="mb-4">Get started by adding your first student to the system</p>
+                    <a asp-action="Create" class="btn btn-dark rounded-pill px-4 py-2">
+                        <i class="bi bi-person-plus me-2"></i> Add New Student
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .badge {
+        font-weight: normal;
+        padding: 0.5em 0.75em;
+        border-radius: 100px;
+    }
+    
+    .status-badge {
+        background-color: var(--klarna-pink);
+        color: #000;
+    }
+    
+    /* Table styles */
+    .table {
+        margin-bottom: 0;
+    }
+    
+    .table th {
+        border: none;
+        color: #666;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .table td {
+        border: none;
+        padding: 1rem;
+        vertical-align: middle;
+    }
+    
+    .table tr {
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    /* Action buttons */
+    .btn-icon {
+        border: 1px solid #dee2e6;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        color: #333;
+        background-color: white;
+    }
+    
+    .btn-icon:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .btn-delete {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+    
+    .btn-delete:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    /* Responsive adjustments */
+    @@media (max-width: 767px) {
+        .table th, .table td {
+            padding: 0.75rem 0.5rem;
+        }
+    }
+</style> 

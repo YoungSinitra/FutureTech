@@ -1,0 +1,90 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-5">Admin Dashboard</h1>
+            <p class="lead">Welcome to the FutureTech Academy Student Management System.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Student Management</h5>
+                    <p class="card-text">Manage student records, update details, and track enrolment status.</p>
+                    <a asp-controller="Students" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-people"></i> View Students
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Add New Student</h5>
+                    <p class="card-text">Register a new student with all required information and profile image.</p>
+                    <a asp-controller="Students" asp-action="Create" class="btn btn-success">
+                        <i class="bi bi-person-plus"></i> Add Student
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Search Students</h5>
+                    <p class="card-text">Find specific students using their name, surname, or ID number.</p>
+                    <a asp-controller="Students" asp-action="Search" class="btn btn-info">
+                        <i class="bi bi-search"></i> Search
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">System Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="bi bi-hdd-rack"></i> Storage Services</h6>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Azure Cosmos DB
+                                    <span class="badge bg-success rounded-pill">Connected</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Azure Blob Storage
+                                    <span class="badge bg-success rounded-pill">Connected</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="bi bi-shield-lock"></i> Authentication</h6>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Google OAuth 2.0
+                                    <span class="badge bg-success rounded-pill">Active</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Admin Access
+                                    <span class="badge bg-success rounded-pill">Granted</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
